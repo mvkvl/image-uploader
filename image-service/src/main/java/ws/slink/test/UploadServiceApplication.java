@@ -1,14 +1,12 @@
-package ws.slink.test.upload;
+package ws.slink.test;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-//import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
-//@EnableEurekaClient
 public class UploadServiceApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(UploadServiceApplication.class);
@@ -20,5 +18,5 @@ public class UploadServiceApplication {
         app.setBannerMode(Banner.Mode.OFF);
         app.run(args);
 	}
-
+	
 }

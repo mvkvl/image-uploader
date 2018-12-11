@@ -1,6 +1,6 @@
 #/usr/bin/env bash
 
-SERVICE_URL=http://localhost:7070/test
+SERVICE_URL=http://localhost:7070/upload
 
 
 
