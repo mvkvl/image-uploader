@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import ws.slink.test.datastore.ImageDataStore;
 import ws.slink.test.model.ProcessingResult;
+import ws.slink.test.service.RabbitMQSender;
 
 @Service
 public class InternetImageUploader {
@@ -21,8 +22,19 @@ public class InternetImageUploader {
 	@Autowired
 	ImageDataStore imageDataStore;
 
+	@Autowired
+	RabbitMQSender rabbitMQSender;
+
+	private ProcessingResult process(String url) {
+		ProcessingResult result =  imageDataStore.save(url);
+		if (result.ok())
+			rabbitMQSender.send(result.fileName);
+
+		return result;			
+	}
+
 	public Collection<ProcessingResult> download(String [] urls) {
-		return Arrays.asList(urls).parallelStream().map(imageDataStore::save).collect(Collectors.toList());
+		return Arrays.asList(urls).parallelStream().map(this::process).collect(Collectors.toList());
 	}
 	
 }

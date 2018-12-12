@@ -14,8 +14,8 @@ public interface ImageDataStore {
 	public ProcessingResult save(String urlString);
 	public ProcessingResult save(String fileName, byte[] data);
 	
-	public Collection<ImageMetaData> images();
-	public ImageMetaData image(int id);
+	public Collection<ImageMetaData> list();
+	public ImageMetaData get(int id);
 	public FileSystemResource raw(int id);
 		
 }

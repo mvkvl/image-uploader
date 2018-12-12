@@ -1,4 +1,4 @@
-package ws.slink.test.service.id;
+package ws.slink.test.service;
 
 /**
  * ID service - needed to generate numeric Id for each uploaded file 

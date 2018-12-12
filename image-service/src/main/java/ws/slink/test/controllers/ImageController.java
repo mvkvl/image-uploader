@@ -21,13 +21,13 @@ public class ImageController {
 	
 	@GetMapping(path = "/image", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Collection<ImageMetaData> images() {
-		return imageDataStore.images();
+		return imageDataStore.list();
 	}
 
 	
 	@GetMapping(path = "/image/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ImageMetaData image(@PathVariable("id") int imageId) {
-		return imageDataStore.image(imageId);
+		return imageDataStore.get(imageId);
 	}
 
 	

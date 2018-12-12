@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ws.slink.test.datastore.ImageDataStore;
 import ws.slink.test.model.ProcessingResult;
+import ws.slink.test.service.RabbitMQSender;
 
 @Service
 public class MultipartImageUploader {
@@ -22,8 +23,19 @@ public class MultipartImageUploader {
 	@Autowired
 	ImageDataStore imageDataStore;
 
+	@Autowired
+	RabbitMQSender rabbitMQSender;
+	
+	private ProcessingResult process(MultipartFile mpFile) {
+		ProcessingResult result =  imageDataStore.save(mpFile);
+		if (result.ok())
+			rabbitMQSender.send(result.fileName);
+
+		return result;			
+	}
+	
 	public Collection<ProcessingResult> upload(MultipartFile [] files) {
-		return Arrays.asList(files).parallelStream().map(imageDataStore::save).collect(Collectors.toList());
+		return Arrays.asList(files).parallelStream().map(this::process).collect(Collectors.toList());
 	}
 
 }

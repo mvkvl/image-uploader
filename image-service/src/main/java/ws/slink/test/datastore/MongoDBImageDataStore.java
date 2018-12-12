@@ -29,13 +29,13 @@ public class MongoDBImageDataStore implements ImageDataStore {
 	}
 
 	@Override
-	public Collection<ImageMetaData> images() {
+	public Collection<ImageMetaData> list() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ImageMetaData image(int id) {
+	public ImageMetaData get(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

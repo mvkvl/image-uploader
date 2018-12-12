@@ -5,4 +5,13 @@ target
 .classpath
 .project
 test-images
+*.log.*
 *.log
+.idea
+TestController.java
+ApplicationConfiguration.java
+AsyncConfiguration.java
+image-service/src/main/java/ws/slink/test/beans/
+image-service/upload
+image-downloader/
+

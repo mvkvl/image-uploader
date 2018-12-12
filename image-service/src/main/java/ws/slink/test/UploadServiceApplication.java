@@ -5,12 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.context.request.RequestContextListener;
 
 @SpringBootApplication
 public class UploadServiceApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(UploadServiceApplication.class);
-
 	
 	public static void main(String[] args) throws Exception {
 		logger.info("starting upload service");
@@ -18,5 +19,11 @@ public class UploadServiceApplication {
         app.setBannerMode(Banner.Mode.OFF);
         app.run(args);
 	}
+
 	
+	// needed to inject 'HttpServletRequest' in URLProvider
+	@Bean 
+	public RequestContextListener requestContextListener(){
+	    return new RequestContextListener();
+	} 
 }

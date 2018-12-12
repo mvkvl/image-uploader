@@ -1,11 +1,10 @@
-package ws.slink.test.service.id;
+package ws.slink.test.service;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Arrays;
 
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-@Qualifier("fs")
+//@Qualifier("fs")
 public class ImageIdServiceImplFs implements ImageIdService {
 
 	@Value("${images.datastore.fs.path.upload}")

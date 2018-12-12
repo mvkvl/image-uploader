@@ -26,9 +26,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ws.slink.test.model.ImageMetaData;
 import ws.slink.test.model.ProcessingResult;
-import ws.slink.test.service.id.ImageIdService;
+import ws.slink.test.service.ImageIdService;
+import ws.slink.test.tools.FileTools;
+import ws.slink.test.tools.URLProvider;
 
 @Service
+//@Qualifier("fs")
 public class FileSystemImageDataStore implements ImageDataStore {
 
 	private static final Logger logger = LoggerFactory.getLogger(FileSystemImageDataStore.class);
@@ -36,6 +39,12 @@ public class FileSystemImageDataStore implements ImageDataStore {
 	@Autowired
 	ImageIdService imageIdService;
 
+	@Autowired
+	FileTools fileTools;
+
+	@Autowired
+	URLProvider urlProvider;
+	
 	@Value("${images.datastore.fs.path.upload}")
     private String uploadPath;
 	
@@ -47,10 +56,10 @@ public class FileSystemImageDataStore implements ImageDataStore {
         try (FileOutputStream fos = new FileOutputStream(convFile)) {
 			fos.write(mpFile.getBytes());
 			fos.close();
-			return new ProcessingResult(mpFile.getOriginalFilename(), "ok", "file successfully uploaded");
+			return new ProcessingResult(mpFile.getOriginalFilename(), "ok", "file successfully uploaded", name);
         } catch (IOException e) {
         	logger.error("error saving file '" + name + "': " + e.getMessage());
-			return new ProcessingResult(mpFile.getOriginalFilename(), "error", e.getMessage());
+			return new ProcessingResult(mpFile.getOriginalFilename(), "error", e.getMessage(), "");
 //			e.printStackTrace();
         }
 	}
@@ -60,14 +69,14 @@ public class FileSystemImageDataStore implements ImageDataStore {
 		String name = imageIdService.nextStrId() + "_" + fileName;
 		try (OutputStream stream = new FileOutputStream(uploadPath + File.separator + name)) {
 		    stream.write(data);
-		    return new ProcessingResult(fileName, "ok", "file successfully uploaded");
+		    return new ProcessingResult(fileName, "ok", "file successfully uploaded", name);
 		} catch (FileNotFoundException e) {
         	logger.error("error saving file '" + name + "' [FileNotFound]: " + e.getMessage());
-			return new ProcessingResult(fileName, "error", "FileNotFound error saving file");
+			return new ProcessingResult(fileName, "error", "FileNotFound error saving file", "");
 //			e.printStackTrace();
 		} catch (IOException e) {
         	logger.error("error saving file '" + name + "' [IOException]: " + e.getMessage());
-			return new ProcessingResult(fileName, "error", "IOException error saving file");
+			return new ProcessingResult(fileName, "error", "IOException error saving file", "");
 //			e.printStackTrace();
 		}
 	}
@@ -93,74 +102,43 @@ public class FileSystemImageDataStore implements ImageDataStore {
 		    	while ((bytesRead = input.read(buffer)) != -1)
 		    		output.write(buffer, 0, bytesRead);
 		    	
-		    	return new ProcessingResult(urlString, "ok", "URL successfully processed");
+		    	return new ProcessingResult(urlString, "ok", "URL successfully processed", outputFileName);
 			}
 		} catch (MalformedURLException e) {
 //			e.printStackTrace();
         	logger.error("error processing URL '" + urlString + "' [MalformedURLException]: " + e.getMessage());
-			return new ProcessingResult(urlString, "error", "MalformedURLException: " + e.getMessage());
+			return new ProcessingResult(urlString, "error", "MalformedURLException: " + e.getMessage(), "");
 		} catch (IOException e) {
 //			e.printStackTrace();
         	logger.error("error processing URL '" + urlString + "' [IOException]: " + e.getMessage());
-			return new ProcessingResult(urlString, "error", "IOException: " + e.getMessage());
+			return new ProcessingResult(urlString, "error", "IOException: " + e.getMessage(), "");
 		}
 	}
 
-	
-	private ImageMetaData processFile(File file) {
-		String fname = file.getName();
-		String idStr = fname.split("_")[0];
-		int    id    = -1;
-		try { id = Integer.parseInt(idStr); } catch (Exception ex) {}
-		return new ImageMetaData(id, fname, "link-to-view-file");
-	}
-	
-	private File getFileById(int id) {
-		String strId = imageIdService.strId(id);
-		File dir = new File(uploadPath);
-		FileFilter fileFilter = new WildcardFileFilter(strId + "_*.*");
-		File[] files = dir.listFiles(fileFilter);
-		if (null != files && files.length > 0)
-			return files[0];
-		else
-			return null;
-	}
-	private String getFileNameById(int id) {
-		try {
-			return getFileById(id).getName();
-		} catch (Exception ex) {
-			return "";
-		}
-	}
-	
 	@Override
-	public Collection<ImageMetaData> images() {
-		
+	public Collection<ImageMetaData> list() {
 		List<ImageMetaData> result = new ArrayList<>();
-		
 		File dir = new File(uploadPath);
-		FileFilter fileFilter = new WildcardFileFilter("*_*.*"); // RegexFileFilter
+		FileFilter fileFilter = new WildcardFileFilter("*_*.*");
 		File[] files = dir.listFiles(fileFilter);
-
 		for (File file: files)
-			result.add(processFile(file));
-		
+			result.add(new FileTools().meta(file, urlProvider.get("image/view")));
 		return result;
 	}
 
 	@Override
-	public ImageMetaData image(int id) {
-		File file = getFileById(id);
+	public ImageMetaData get(int id) {
+		File file = fileTools.getFileById(id, uploadPath);
 		if (null != file)
-			return processFile(file);
+			return fileTools.meta(file, urlProvider.get("image/view"));
 		else
 			return new ImageMetaData();
 	}
 
 	public FileSystemResource raw(int id) {
-		String fname = getFileNameById(id);
+		String fname = fileTools.getFileNameById(id, uploadPath);
 		if (null != fname && !fname.isEmpty())
-			return new FileSystemResource(getFileById(id));
+			return new FileSystemResource(fileTools.getFileById(id, uploadPath));
 		else 
 			return null;
 	}

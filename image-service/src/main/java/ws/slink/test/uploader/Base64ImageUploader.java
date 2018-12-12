@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import ws.slink.test.datastore.ImageDataStore;
 import ws.slink.test.model.Base64EncodedImageJson;
 import ws.slink.test.model.ProcessingResult;
+import ws.slink.test.service.RabbitMQSender;
 import ws.slink.test.tools.Base64Decoder;
 import ws.slink.test.tools.MimeTypeToExtension;
 
@@ -23,7 +24,10 @@ public class Base64ImageUploader {
 
 	@Autowired
 	ImageDataStore imageDataStore;
-
+	
+	@Autowired
+	RabbitMQSender rabbitMQSender;
+	
 	private ProcessingResult save(Base64EncodedImageJson encodedImage) {
 
 		// as an extension of this service, we can detect 
@@ -58,7 +62,11 @@ public class Base64ImageUploader {
 		
 		logger.debug("saving file '" + name);
 
-		return imageDataStore.save(name, new Base64Decoder().decode(encodedImage.base64));
+		ProcessingResult result = imageDataStore.save(name, new Base64Decoder().decode(encodedImage.base64));
+		if (result.ok())
+			rabbitMQSender.send(result.fileName);
+
+		return result;			
 	}
 	
 	public Collection<ProcessingResult> upload(Base64EncodedImageJson [] imagesEncoded) {
