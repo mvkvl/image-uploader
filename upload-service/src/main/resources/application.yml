@@ -16,7 +16,7 @@ spring:
       port: 27017
           
 server:
-  port: 7071
+  port: 7070
   
 logging:
   file: upload-service.log
@@ -31,8 +31,6 @@ logging:
     ws.slink.test: DEBUG
 
 images:
-  url-provider:
-    type: self
   datastore:
     type: mongodb # supported values: fs, mongodb
     fs: 
@@ -40,5 +38,3 @@ images:
         upload:  "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/images/"
         preview: "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/preview"
       
-#cond:
-#  bean: bean2

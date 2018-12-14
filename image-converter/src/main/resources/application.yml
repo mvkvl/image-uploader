@@ -25,10 +25,13 @@ logging:
     ws.slink.test: INFO
 
 images:
+  url-provider:
+    type: static # supported values: static, self  
+    base-url: http://localhost:7071
   datastore:
+    type: mongodb # supported values: fs, mongodb
     fs: 
       path:
-        upload:  "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/images/"
+        upload:  "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/images"
         preview: "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/preview"
       
-
