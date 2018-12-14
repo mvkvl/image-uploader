@@ -31,7 +31,7 @@ public class MultipartImageUploader {
 	private ProcessingResult process(MultipartFile mpFile) {
 		ProcessingResult result = imageDataWriter.save(mpFile);
 		if (result.ok())
-			rabbitMQSender.send(result.key);
+			rabbitMQSender.send(result);
 		return result;
 	}
 	

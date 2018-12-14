@@ -59,7 +59,7 @@ public class MongoDBImageDataStore implements ImageDataWriter, ImageDataReader {
 	}
 
 	@Override
-	public ProcessingResult save(BufferedImage image, String fileName) {
+	public ProcessingResult save(BufferedImage image, String key, String fileName) {
 		return save(fileName, ((DataBufferByte) image.getData().getDataBuffer()).getData());
 	}
 
@@ -97,6 +97,7 @@ public class MongoDBImageDataStore implements ImageDataWriter, ImageDataReader {
 
 	@Override
 	public Collection<ImageMetaData> list() {
+		logger.debug("LIST ()");
 		Collection<ImageMetaData> result = new ArrayList<>();
 		repository.findAll().stream().forEach(b64i -> result.add(
 				new ImageMetaData(b64i.id, 
@@ -109,18 +110,21 @@ public class MongoDBImageDataStore implements ImageDataWriter, ImageDataReader {
 
 	@Override
 	public ImageMetaData get(String id) {
+		logger.debug("GET ("+ id+")");
 		Base64EncodedImageJson base64Image = repository.findById(id).orElse(new Base64EncodedImageJson("", "", ""));
 		return new ImageMetaData(base64Image.id, base64Image.getName(), urlProvider.get("image/view") + "/" + id, "");
 	}
 
 	@Override
 	public RawImage raw(String id) {
+		logger.debug("RAW ("+ id+")");
 		Base64EncodedImageJson b64i = repository.findById(id).orElse(new Base64EncodedImageJson("", "", ""));
 		return new RawImage(new ByteArrayInputStream(new Base64Processor().decode(b64i.base64)), b64i.type);
 	}
 
 	@Override
 	public BufferedImage read(String id) throws IOException {
+		logger.debug("READ ("+ id+")");
 		Base64EncodedImageJson b64i = repository.findById(id).orElse(new Base64EncodedImageJson("", "", ""));
 		return ImageIO.read(new ByteArrayInputStream(new Base64Processor().decode(b64i.base64)));
 	}

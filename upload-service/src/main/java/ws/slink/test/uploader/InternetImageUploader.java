@@ -30,7 +30,7 @@ public class InternetImageUploader {
 	private ProcessingResult process(String url) {
 		ProcessingResult result =  imageDataWriter.save(url);
 		if (result.ok())
-			rabbitMQSender.send(result.key);
+			rabbitMQSender.send(result);
 		return result;			
 	}
 

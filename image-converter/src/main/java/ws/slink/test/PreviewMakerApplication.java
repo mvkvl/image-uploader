@@ -16,6 +16,7 @@ import org.springframework.cloud.stream.messaging.Sink;
 import ws.slink.test.convert.processor.ImageConverter;
 import ws.slink.test.datastore.ImageDataReader;
 import ws.slink.test.datastore.ImageDataWriter;
+import ws.slink.test.datatype.ProcessingResult;
 
 @EnableBinding(Sink.class)
 @SpringBootApplication
@@ -42,11 +43,11 @@ public class PreviewMakerApplication {
 	}
 	
 	@StreamListener(target = Sink.INPUT)
-    public void processImageFile(String key) throws IOException {
-		logger.info("processing " + key);
+    public void processImageFile(ProcessingResult imageSaveResult) throws IOException {
+		logger.info("processing " + imageSaveResult);
 		previewWriter.save(
-			    imageConverter.resize(imageReader.read(key))
-			   ,key);
+			    imageConverter.resize(imageReader.read(imageSaveResult.key))
+			   ,imageSaveResult.key, imageSaveResult.input);
     }
 
 }

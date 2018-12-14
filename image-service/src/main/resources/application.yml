@@ -28,7 +28,8 @@ logging:
     root: ERROR
     org.springframework: ERROR
     org.hibernate: ERROR
-    ws.slink.test: DEBUG
+    ws.slink.test: ERROR
+    ws.slink.test.datastore: DEBUG
 
 images:
   url-provider:

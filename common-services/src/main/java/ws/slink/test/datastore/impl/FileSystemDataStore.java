@@ -48,7 +48,7 @@ public abstract class FileSystemDataStore implements ImageDataWriter, ImageDataR
 
 	
 	@Override
-	public ProcessingResult save(BufferedImage image, String fileName) {
+	public ProcessingResult save(BufferedImage image, String key, String fileName) {
 		logger.debug("saving image to " + getFilePath() + File.separator + fileName);
 		try {
 			ImageIO.write(image, 

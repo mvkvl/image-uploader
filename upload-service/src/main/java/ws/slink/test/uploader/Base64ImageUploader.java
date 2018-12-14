@@ -66,7 +66,7 @@ public class Base64ImageUploader {
 
 		ProcessingResult result = imageDataWriter.save(name, new Base64Processor().decode(encodedImage.base64));
 		if (result.ok())
-			rabbitMQSender.send(result.key);
+			rabbitMQSender.send(result);
 
 		return result;			
 	}

@@ -20,8 +20,8 @@ public class Base64EncodedImageJson {
 	@Id
 	public String id;
 
-	@JsonProperty("key")
-	public String key;
+	@JsonProperty("name")
+	public String name;
 	
 	@JsonProperty("type")
 	public String type;
@@ -31,8 +31,8 @@ public class Base64EncodedImageJson {
 	
 	public Base64EncodedImageJson() {}
 	
-	public Base64EncodedImageJson(String key, String type, String base64) {
-        this.key    = (key != null && !key.isEmpty()) ? key : randomName();
+	public Base64EncodedImageJson(String name, String type, String base64) {
+        this.name   = (name != null && !name.isEmpty()) ? name : randomName();
         this.type   = type;
         this.base64 = base64;
     }
@@ -41,8 +41,8 @@ public class Base64EncodedImageJson {
 	 * generates random name for an image file if it's not passed as a 'name' json property
 	 */
 	private String randomName() {
-		key = RandomString.get(RANDOM_NAME_LENGTH);
-		return key;
+		name = RandomString.get(RANDOM_NAME_LENGTH);
+		return name;
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class Base64EncodedImageJson {
 	 * if 'name' is null set it to random string and return 
 	 */
 	public String getName() {
-		return (null != key && !key.isEmpty()) ? key : randomName(); 
+		return (null != name && !name.isEmpty()) ? name : randomName(); 
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class Base64EncodedImageJson {
 	public String toString() {
 		return 
 		  "{" +
-		  "\"name\":\"" + key + "\", " + 		
+		  "\"name\":\"" + name + "\", " + 		
 		  "\"type\":\"" + type + "\", " + 		
 		  "\"base64\":\"" + base64sub() + "\"" + 		
 		  "}";

@@ -60,6 +60,7 @@ public class MongoDBPreviewDataStore implements ImageDataWriter, ImageDataReader
 	
 	@Override
 	public ImageMetaData get(String id) {
+		logger.debug("GET ("+ id+")");
 		Base64EncodedPreviewJson base64Image = repository.findById(id).orElse(new Base64EncodedPreviewJson("", "", ""));
 		return new ImageMetaData(base64Image.id, 
 				                 base64Image.getName(), 
@@ -69,14 +70,14 @@ public class MongoDBPreviewDataStore implements ImageDataWriter, ImageDataReader
 	
 	@Override
 	public RawImage raw(String id) {
+		logger.debug("RAW ("+ id+")");
 		Base64EncodedPreviewJson b64i = repository.findById(id).orElse(new Base64EncodedPreviewJson("", "", ""));
 		return new RawImage(new ByteArrayInputStream(new Base64Processor().decode(b64i.base64)), b64i.type);
 	}
 
-	@Override
-	public ProcessingResult save(String key, byte[] data) {
+	
+	public ProcessingResult __save(String key, String type, byte[] data) {
 		try {
-			String type = URLConnection.guessContentTypeFromName(key);
 			Base64EncodedPreviewJson base64Image 
    		          = new Base64EncodedPreviewJson(key, 
    		        		                         type, 
@@ -90,8 +91,16 @@ public class MongoDBPreviewDataStore implements ImageDataWriter, ImageDataReader
 	}
 
 	@Override
-	public ProcessingResult save(BufferedImage image, String key) {
-		return save(key, ((DataBufferByte) image.getData().getDataBuffer()).getData());
+	public ProcessingResult save(String fileName, byte[] data) {
+		String type = URLConnection.guessContentTypeFromName(fileName);
+		return __save(fileName, type, data);
+	}
+
+	
+	@Override
+	public ProcessingResult save(BufferedImage image, String key, String fileName) {
+		String type = URLConnection.guessContentTypeFromName(fileName);
+		return __save(key, type, ((DataBufferByte) image.getData().getDataBuffer()).getData());
 	}
 
 	@Override
@@ -129,6 +138,7 @@ public class MongoDBPreviewDataStore implements ImageDataWriter, ImageDataReader
 
 	@Override
 	public BufferedImage read(String id) throws IOException {
+		logger.debug("READ ("+ id+")");
 		Base64EncodedPreviewJson b64i = repository.findById(id).orElse(new Base64EncodedPreviewJson("", "", ""));
 		return ImageIO.read(new ByteArrayInputStream(new Base64Processor().decode(b64i.base64)));
 	}
