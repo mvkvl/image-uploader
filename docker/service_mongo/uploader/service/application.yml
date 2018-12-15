@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: upload-service
+server:
+  port: 7070

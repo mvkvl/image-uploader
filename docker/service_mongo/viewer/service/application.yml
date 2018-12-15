@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: images-service
+server:
+  port: 7071

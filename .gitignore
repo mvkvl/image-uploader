@@ -14,4 +14,9 @@ AsyncConfiguration.java
 image-service/src/main/java/ws/slink/test/beans/
 image-service/upload
 image-downloader/
+service/bootstram.yml
+rabbitmq/.erlang.cookie
+rabbitmq/mnesia
+rabbitmq/schema
+rabbitmq/config
 

@@ -1,0 +1,38 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+#  data:
+#    mongodb:
+#      host: mongodb
+#      port: 27017
+
+logging:
+  pattern:
+    console: "%d %-5level [%thread] %logger : %msg%n"
+    file:    "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    root: ERROR
+    org.springframework: ERROR
+    org.hibernate: ERROR
+    ws.slink.test: ERROR
+
+images:
+  view:
+    path:
+      image:   "image/view"
+      preview: "preview/view"
+  url-provider:
+    type: self
+  datastore:
+    type: fs # supported values: fs, mongodb
+    fs:
+      path:
+        upload:  "/upload/images"
+        preview: "/upload/preview"

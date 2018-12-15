@@ -18,8 +18,8 @@ logging:
     console: "%d %-5level [%thread] %logger : %msg%n"
     file:    "%d %-5level [%thread] %logger : %msg%n"    
   level:
-    console: 'INFO'
-    root: INFO
+    # console: 'INFO'
+    root: ERROR
     org.springframework.web: ERROR
     org.hibernate: ERROR
     ws.slink.test: ERROR

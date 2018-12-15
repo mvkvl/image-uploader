@@ -1,0 +1,61 @@
+version: '3.3'
+
+services:
+
+  uploader_mdb:
+    container_name: uploader
+    hostname: uploader
+    image: ...
+    volumes:
+        - ../upload:/upload
+        - ./uploader:/service
+        - ./bootstrap.yml:/service/bootstrap.yml
+    ports:
+        - '8091:7070'
+    depends_on:
+        - rabbitmq_mdb
+        - mongodb_mdb
+
+  converter_mdb:
+    container_name: converter
+    hostname: converter
+    image: ...
+    volumes:
+        - ../upload:/upload
+        - ./converter:/service
+        - ./bootstrap.yml:/service/bootstrap.yml
+    depends_on:
+        - rabbitmq_mdb
+        - mongodb_mdb
+
+  viewer_mdb:
+    container_name: viewer
+    hostname: viewer
+    image: ...
+    volumes:
+        - ../upload:/upload
+        - ./viewer:/service
+        - ./bootstrap.yml:/service/bootstrap.yml
+    ports:
+        - '8092:7071'
+    depends_on:
+        - mongodb_mdb
+
+  rabbitmq_mdb:
+    container_name: rabbit
+    hostname: rabbit
+    image: rabbitmq:3.7.8-management-alpine
+    volumes:
+        - ./rabbitmq:/var/lib/rabbitmq
+#    ports:
+#        - '15672:15672'
+#        - '5672:5672'
+
+  mongodb_mdb:
+    container_name: mongo
+    hostname: mongo
+    image: bitnami/mongodb
+    volumes:
+        - ./mongodb:/bitnami
+    ports:
+        - '27017:27017'
