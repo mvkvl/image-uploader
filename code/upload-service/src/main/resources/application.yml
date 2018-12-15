@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: upload-service
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+#  data:
+#    mongodb:
+#      host: localhost
+#      port: 27017
+
+server:
+  port: 7070
+
+logging:
+  file: upload-service.log
+  pattern:
+    console: "%d %-5level [%thread] %logger : %msg%n"
+    file:    "%d %-5level [%thread] %logger : %msg%n"    
+  level:
+#    console: 'ERROR'
+    root: ERROR
+    org.springframework: WARN
+    org.hibernate: ERROR
+    ws.slink.test: ERROR
+    ws.slink.datastore: WARN
+
+images:
+  datastore:
+    type: fs # supported values: fs, mongodb
+    fs:
+      path:
+        upload:  "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/images/"
+        preview: "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/preview"

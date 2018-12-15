@@ -1,0 +1,48 @@
+version: '3.3'
+
+services:
+
+  uploader:
+    container_name: uploader_fs
+    hostname: uploader
+    image: mvkvl/circus
+    volumes:
+        - ../upload:/upload
+        - ./uploader/service:/service
+        - ./uploader/circus:/etc/circus
+    ports:
+        - '8081:7070'
+    depends_on:
+        - rabbitmq
+
+  converter:
+    container_name: converter_fs
+    hostname: converter
+    image: mvkvl/circus
+    volumes:
+        - ../upload:/upload
+        - ./converter/service:/service
+        - ./converter/circus:/etc/circus
+    depends_on:
+        - rabbitmq
+
+  viewer:
+    container_name: viewer_fs
+    hostname: viewer
+    image: mvkvl/circus
+    volumes:
+        - ../upload:/upload
+        - ./viewer/service:/service
+        - ./viewer/circus:/etc/circus
+    ports:
+        - '8082:7071'
+
+  rabbitmq:
+    container_name: rabbit_fs
+    hostname: rabbit
+    image: rabbitmq:3.7.8-management-alpine
+    volumes:
+        - ./rabbitmq:/var/lib/rabbitmq
+#    ports:
+#        - '15672:15672'
+#        - '5672:5672'

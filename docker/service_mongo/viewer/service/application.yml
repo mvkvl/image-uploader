@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: image-service
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+
+server:
+  port: 7071
+
+logging:
+  pattern:
+    console: "%d %-5level [%thread] %logger : %msg%n"
+    file:    "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    root: ERROR
+    org.springframework: ERROR
+    org.hibernate: ERROR
+    ws.slink.test: INFO
+
+images:
+  view:
+    path:
+      image:   "image/view"
+      preview: "preview/view"
+  url-provider:
+    type: self
+  datastore:
+    type: mongodb

@@ -14,4 +14,16 @@ AsyncConfiguration.java
 image-service/src/main/java/ws/slink/test/beans/
 image-service/upload
 image-downloader/
-
+service/bootstrap.yml
+**/rabbitmq/.erlang.cookie
+**/rabbitmq/mnesia
+**/rabbitmq/schema
+**/rabbitmq/config
+**/mongodb/mongodb
+docker/service_mongo/viewer/service/image-service
+docker/service_mongo/uploader/service/upload-service
+docker/service_mongo/converter/service/image-converter
+docker/service_fs/converter/service/image-converter
+docker/service_fs/uploader/service/upload-service
+docker/service_fs/viewer/service/image-service
+.tmp/

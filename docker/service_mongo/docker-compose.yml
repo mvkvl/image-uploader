@@ -1,0 +1,59 @@
+version: '3.3'
+
+services:
+
+  uploader:
+    container_name: uploader_mdb
+    hostname: uploader
+    image: mvkvl/circus
+    volumes:
+        - ./uploader/service:/service
+        - ./uploader/circus:/etc/circus
+    ports:
+        - '7070:7070'
+    depends_on:
+        - rabbitmq
+        - mongodb
+
+  converter:
+    container_name: converter_mdb
+    hostname: converter
+    image: mvkvl/circus
+    volumes:
+        - ./converter/service:/service
+        - ./converter/circus:/etc/circus
+    depends_on:
+        - rabbitmq
+        - mongodb
+
+  viewer:
+    container_name: viewer_mdb
+    hostname: viewer
+    image: mvkvl/circus
+    volumes:
+        - ./viewer/service:/service
+        - ./viewer/circus:/etc/circus
+    ports:
+        - '7071:7071'
+    depends_on:
+        - mongodb
+
+  rabbitmq:
+    container_name: rabbit_mdb
+    hostname: rabbit
+    image: rabbitmq:3.7.8-management-alpine
+    volumes:
+        - ./rabbitmq:/var/lib/rabbitmq
+#    ports:
+#        - '15672:15672'
+#        - '5672:5672'
+
+  mongodb:
+    container_name: mongo_mdb
+    hostname: mongo
+    image: bitnami/mongodb
+    volumes:
+        - ./mongodb:/bitnami
+    ports:
+        # to connect to database from host machine
+        - '27017:27017'

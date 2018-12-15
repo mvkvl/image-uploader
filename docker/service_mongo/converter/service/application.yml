@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: converter-service
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: images.preview.queue
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+
+logging:
+  pattern:
+    console: "%d %-5level [%thread] %logger : %msg%n"
+    file:    "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    root: ERROR
+    org.springframework: ERROR
+    org.hibernate: ERROR
+    ws.slink.test: INFO
+
+images:
+  datastore:
+    type: mongodb

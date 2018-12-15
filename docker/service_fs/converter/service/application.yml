@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: converter-service
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: images.preview.queue
+
+logging:
+  pattern:
+    console: "%d %-5level [%thread] %logger : %msg%n"
+    file:    "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    root: ERROR
+    org.springframework: ERROR
+    org.hibernate: ERROR
+    ws.slink.test: ERROR
+
+images:
+  datastore:
+    type: fs
+    fs:
+      path:
+        upload:  "/upload/images"
+        preview: "/upload/preview"
