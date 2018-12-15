@@ -1,18 +1,22 @@
 spring:
   application:
     name: upload-service
-  http:
+  servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 200MB
+      max-request-size: 200MB
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
           
 server:
-  port: 7070
+  port: 7071
   
 logging:
   file: upload-service.log
@@ -24,20 +28,23 @@ logging:
     root: ERROR
     org.springframework: ERROR
     org.hibernate: ERROR
-    ws.slink.test: DEBUG
+    ws.slink.test: ERROR
+    ws.slink.test.datastore: DEBUG
+    ws.slink.test.controllers: DEBUG
 
 images:
+  view:
+    path:
+      image:   "image/view"
+      preview: "preview/view"
+  url-provider:
+    type: self
   datastore:
+    type: mongodb # supported values: fs, mongodb
     fs: 
       path:
         upload:  "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/images/"
         preview: "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/preview"
-
-#      enabled: true
-#    s3:
-#      enabled: false
-#    mongodb:
-#      enabled: false
       
-cond:
-  bean: bean2
+#cond:
+#  bean: bean2

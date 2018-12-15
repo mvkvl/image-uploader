@@ -1,38 +1,41 @@
 spring:
   application:
-    name: converter-service
-  cloud:
-    stream:
-      bindings:
-        input:
-          destination: images.preview.queue
+    name: upload-service
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
   rabbitmq:
     host: localhost
     port: 5672
     username: guest
     password: guest
-      
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+          
+server:
+  port: 7070
+  
 logging:
-  file: converter-service.log
+  file: upload-service.log
   pattern:
     console: "%d %-5level [%thread] %logger : %msg%n"
     file:    "%d %-5level [%thread] %logger : %msg%n"    
   level:
-    console: 'INFO'
-    root: INFO
-    org.springframework.web: ERROR
+#    console: 'ERROR'
+    root: ERROR
+    org.springframework: ERROR
     org.hibernate: ERROR
     ws.slink.test: ERROR
-    ws.slink.test.datastore: DEBUG
+    ws.slink.datastore: DEBUG
 
 images:
-  url-provider:
-    type: static # supported values: static, self  
-    base-url: http://localhost:7071
   datastore:
     type: mongodb # supported values: fs, mongodb
     fs: 
       path:
-        upload:  "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/images"
+        upload:  "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/images/"
         preview: "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/preview"
       
