@@ -11,7 +11,7 @@ services:
         - ./uploader/service:/service
         - ./uploader/circus:/etc/circus
     ports:
-        - '8081:7070'
+        - '7070:7070'
     depends_on:
         - rabbitmq
 
@@ -35,7 +35,7 @@ services:
         - ./viewer/service:/service
         - ./viewer/circus:/etc/circus
     ports:
-        - '8082:7071'
+        - '7071:7071'
 
   rabbitmq:
     container_name: rabbit_fs
