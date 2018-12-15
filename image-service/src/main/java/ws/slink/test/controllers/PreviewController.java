@@ -25,6 +25,7 @@ import ws.slink.test.datatype.RawImage;
 @RestController
 public class PreviewController {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(PreviewController.class);
 
 	@Autowired
@@ -48,9 +49,6 @@ public class PreviewController {
 	@GetMapping(path = "/preview/view/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public @ResponseBody ResponseEntity<byte[]> viewPreview(@PathVariable("id") String id) throws IOException {
 		RawImage image = previewDataReader.raw(id);
-		
-		logger.debug("preview content type: " + image.contentType);
-		
 		HttpHeaders headers = new HttpHeaders();
 	    headers.setContentType(MediaType.valueOf(image.contentType));
 		return new ResponseEntity<byte[]>(IOUtils.toByteArray(image.input), headers, HttpStatus.OK);

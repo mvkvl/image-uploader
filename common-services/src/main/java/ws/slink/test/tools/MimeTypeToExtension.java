@@ -2,10 +2,25 @@ package ws.slink.test.tools;
 
 public class MimeTypeToExtension {
 
+	/**
+	 * 
+	 * Get file extension by mime type
+	 * 
+	 * @param type
+	 * @return extension prepended with dot
+	 */
 	public String convert(String type) {
 		return convert(type, false);
 	}
 
+	/**
+	 * 
+	 * Get file extension by mime type
+	 * 
+	 * @param type
+	 * @param stripDot
+	 * @return extension (optionally prepended with dot)
+	 */
 	public String convert(String type, boolean stripDot) {
 		String [] parts = type.split("/");
 		String ext = "";

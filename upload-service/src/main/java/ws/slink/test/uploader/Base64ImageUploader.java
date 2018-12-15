@@ -59,7 +59,7 @@ public class Base64ImageUploader {
 		if (null == extension || extension.isEmpty()) {
 			extension = new MimeTypeToExtension().convert(type);
 			if (!name.toLowerCase().endsWith(extension.toLowerCase()))
-				name += "." + extension;
+				name += extension;
 		}
 		
 		logger.debug("saving file '" + name);

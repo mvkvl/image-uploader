@@ -64,8 +64,8 @@ public class MongoDBImageDataStore implements ImageDataWriter, ImageDataReader {
 
 	@Override
 	public ProcessingResult save(BufferedImage image, String key, String fileName) {
+		// not used for saving uploaded images 
 		throw new UnsupportedMethodException();
-//		return save(fileName, ((DataBufferByte) image.getData().getDataBuffer()).getData());
 	}
 
 	@Override
@@ -102,7 +102,6 @@ public class MongoDBImageDataStore implements ImageDataWriter, ImageDataReader {
 
 	@Override
 	public Collection<ImageMetaData> list() {
-		logger.debug("LIST ()");
 		Collection<ImageMetaData> result = new ArrayList<>();
 		repository.findAll().stream().forEach(b64i -> result.add(
 				new ImageMetaData(b64i.id, 
@@ -115,54 +114,31 @@ public class MongoDBImageDataStore implements ImageDataWriter, ImageDataReader {
 
 	@Override
 	public ImageMetaData get(String id) {
-		logger.debug("GET ("+ id+")");
-		Base64EncodedImageJson base64Image = repository.findById(id).orElse(new Base64EncodedImageJson("", "", ""));
-		return new ImageMetaData(base64Image.id, base64Image.getName(), urlProvider.get(imageViewURLPath) + "/" + id, "");
+		return repository
+				 .findById(id)
+				 .map(b64i -> 
+				        new ImageMetaData(b64i.id, 
+						                  b64i.getName(), 
+				                          urlProvider.get(imageViewURLPath) + "/" + id, 
+				                          ""))
+				 .orElse(new ImageMetaData());
 	}
 
 	@Override
 	public RawImage raw(String id) {
-		logger.debug("RAW ("+ id+")");
-		Base64EncodedImageJson b64i = repository.findById(id).orElse(new Base64EncodedImageJson("", "", ""));
-		return new RawImage(new ByteArrayInputStream(new Base64Processor().decode(b64i.base64)), b64i.type);
+		return repository
+				 .findById(id)
+		         .map(b64i ->
+		         	new RawImage(new ByteArrayInputStream(
+		         			       new Base64Processor().decode(b64i.base64)), 
+		         			     b64i.type))
+		         .orElse(new RawImage(new ByteArrayInputStream(new byte[1]), "image/png"));
 	}
 
 	@Override
 	public BufferedImage read(String id) throws IOException {
-		logger.debug("READ ("+ id+")");
 		Base64EncodedImageJson b64i = repository.findById(id).orElse(new Base64EncodedImageJson("", "", ""));
 		return ImageIO.read(new ByteArrayInputStream(new Base64Processor().decode(b64i.base64)));
 	}
 
 }
-
-
-
-//try {
-//Base64EncodedImageJson base64Image 
-//      = new Base64EncodedImageJson(mpFile.getOriginalFilename(),
-//    		                       mpFile.getContentType(),
-//    		                       new Base64Processor().encode(mpFile));
-//repository.save(base64Image);
-//return new ProcessingResult(mpFile.getOriginalFilename(), "ok", "file successfully uploaded", base64Image.id);
-//} catch (Exception e) {
-//e.printStackTrace();
-//return new ProcessingResult(mpFile.getOriginalFilename(), "error", e.getMessage(), "");
-//}
-
-
-
-//String base64 = "";
-//try (InputStream input = conn.getInputStream()) {
-//	base64 = new Base64Processor().encode(IOUtils.toByteArray(input));	
-//} catch (IOException e) {
-//	logger.error("error processing URL '" + urlString + "' [IOException]: " + e.getMessage());
-//	return new ProcessingResult(urlString, "error", "IOException: " + e.getMessage(), "");
-//}
-//
-//Base64EncodedImageJson base64Image = new Base64EncodedImageJson(fileName, type, base64);
-//
-//repository.save(base64Image);
-//
-//return new ProcessingResult(fileName, "ok", "file successfully uploaded", base64Image.id);
-

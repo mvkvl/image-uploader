@@ -63,9 +63,6 @@ public abstract class FileSystemDataStore implements ImageDataWriter, ImageDataR
 
 	@Override
 	public ProcessingResult save(MultipartFile mpFile) {
-		
-		logger.debug(" >>> FILE PATH: " + getFilePath());
-		
 		String name = fileTools.getFileName(mpFile.getOriginalFilename(), getFilePath()); 
 		File convFile = new File(getFilePath() + File.separator + name);
 		logger.debug("saving file '" + name + "' to: " + getFilePath() + File.separator + name);

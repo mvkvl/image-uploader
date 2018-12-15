@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * Result of one item processing (uploading for files or downloading for URLs)
  * Collection of ProcessingResult is returned as JSON array from upload service calls
  *  
- * @author kami
- *
  */
 @JsonPropertyOrder({ "input", "result", "message"})
 public class ProcessingResult {
@@ -39,6 +37,6 @@ public class ProcessingResult {
 	}
 	
 	public boolean ok() {
-		return result.equals("ok");
+		return result.equalsIgnoreCase("ok");
 	}
 }

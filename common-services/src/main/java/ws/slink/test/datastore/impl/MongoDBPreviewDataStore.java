@@ -65,24 +65,29 @@ public class MongoDBPreviewDataStore implements ImageDataWriter, ImageDataReader
 	
 	@Override
 	public ImageMetaData get(String id) {
-		logger.debug("GET ("+ id+")");
-		Base64EncodedPreviewJson base64Image = repository.findById(id).orElse(new Base64EncodedPreviewJson("", "", ""));
-		return new ImageMetaData(base64Image.id, 
-				                 base64Image.getName(), 
-				                 urlProvider.get(imageViewURLPath) + "/" + id,
-				                 imageDS.get(base64Image.key).link);
+		return repository
+				 .findById(id)
+				 .map(b64i -> 
+				        new ImageMetaData(b64i.id, 
+						                  b64i.getName(), 
+				                          urlProvider.get(imageViewURLPath) + "/" + id, 
+				                          imageDS.get(b64i.key).link))
+				 .orElse(new ImageMetaData());
 	}
 	
 	@Override
 	public RawImage raw(String id) {
-		logger.debug("RAW ("+ id+")");
-		Base64EncodedPreviewJson b64i = repository.findById(id).orElse(new Base64EncodedPreviewJson("", "", ""));
-		return new RawImage(new ByteArrayInputStream(new Base64Processor().decode(b64i.base64)), b64i.type);
+		return repository
+				 .findById(id)
+		         .map(b64i ->
+		         	new RawImage(new ByteArrayInputStream(
+		         			       new Base64Processor().decode(b64i.base64)), 
+		         			     b64i.type))
+		         .orElse(new RawImage(new ByteArrayInputStream(new byte[1]), "image/png"));
 	}
 
 	@Override
 	public BufferedImage read(String id) throws IOException {
-		logger.debug("READ ("+ id+")");
 		Base64EncodedPreviewJson b64i = repository.findById(id).orElse(new Base64EncodedPreviewJson("", "", ""));
 		return ImageIO.read(new ByteArrayInputStream(new Base64Processor().decode(b64i.base64)));
 	}
@@ -110,51 +115,20 @@ public class MongoDBPreviewDataStore implements ImageDataWriter, ImageDataReader
 
 	@Override
 	public ProcessingResult save(String fileName, byte[] data) {
+		// not used for saving previews 
 		throw new UnsupportedMethodException();
 	}
 
 	@Override
 	public ProcessingResult save(MultipartFile mpFile) {
+		// not used for saving previews 
 		throw new UnsupportedMethodException();
 	}
 
 	@Override
 	public ProcessingResult save(String urlString) {
+		// not used for saving previews 
 		throw new UnsupportedMethodException();
 	}
 
 }
-
-
-
-//String type = URLConnection.guessContentTypeFromName(fileName);
-//return __save(fileName, type, data);
-//String type = URLConnection.guessContentTypeFromName(fileName);
-//		return __save(key, type, ((DataBufferByte) image.getData().getDataBuffer()).getData());
-
-
-//try {
-//return save(mpFile.getOriginalFilename(), mpFile.getBytes());
-//} catch (IOException e) {
-//return new ProcessingResult(mpFile.getOriginalFilename(), "error", e.getMessage(), "");
-//}		
-
-//return null;
-//String fileName = "";
-//try {
-//	
-//	URL url = new URL(urlString);
-//	URLConnection conn = url.openConnection();
-//
-//	       fileName = FilenameUtils.getName(url.getPath());
-//	String type     = conn.getContentType();
-//	
-//	if (!type.toLowerCase().contains("image")) {
-//		logger.error("unsupported mime type received: '" + type + "'");
-//		return new ProcessingResult(urlString, "error", "unsupported mime type '" + type + "'");
-//	}			
-//	
-//	return save(fileName, IOUtils.toByteArray(conn.getInputStream()));
-//} catch (Exception e) {
-//	return new ProcessingResult(fileName, "error", e.getMessage(), "");
-//}
