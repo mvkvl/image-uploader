@@ -6,7 +6,26 @@ spring:
       bindings:
         input:
           destination: images.preview.queue
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+  data:
+    mongodb:
+      host: mongodb
+      port: 27017
+
+logging:
+  pattern:
+    console: "%d %-5level [%thread] %logger : %msg%n"
+    file:    "%d %-5level [%thread] %logger : %msg%n"
+  level:
+    root: ERROR
+    org.springframework: ERROR
+    org.hibernate: ERROR
+    ws.slink.test: INFO
+
 images:
-  url-provider:
-    type: static # supported values: static, self  
-    base-url: http://localhost:7071
+  datastore:
+    type: mongodb

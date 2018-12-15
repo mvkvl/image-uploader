@@ -10,7 +10,6 @@ services:
         - ../upload:/upload
         - ./uploader/service:/service
         - ./uploader/circus:/etc/circus
-        - ./bootstrap.yml:/service/bootstrap.yml
     ports:
         - '8081:7070'
     depends_on:
@@ -24,7 +23,6 @@ services:
         - ../upload:/upload
         - ./converter/service:/service
         - ./converter/circus:/etc/circus
-        - ./bootstrap.yml:/service/bootstrap.yml
     depends_on:
         - rabbitmq
 
@@ -36,7 +34,6 @@ services:
         - ../upload:/upload
         - ./viewer/service:/service
         - ./viewer/circus:/etc/circus
-        - ./bootstrap.yml:/service/bootstrap.yml
     ports:
         - '8082:7071'
 

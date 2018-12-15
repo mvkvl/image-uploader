@@ -11,7 +11,7 @@ public class UploadServiceApplication {
 
 	private static final Logger logger = LoggerFactory.getLogger(UploadServiceApplication.class);
 	
-	public static void main(String[] args) throws Exception {
+		public static void main(String[] args) throws Exception {
 		logger.info("starting upload service");
         SpringApplication app = new SpringApplication(UploadServiceApplication.class);
         app.setBannerMode(Banner.Mode.OFF);

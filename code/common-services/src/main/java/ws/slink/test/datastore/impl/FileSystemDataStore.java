@@ -18,7 +18,6 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,8 +126,12 @@ public abstract class FileSystemDataStore implements ImageDataWriter, ImageDataR
 	public Collection<ImageMetaData> list() {
 		List<ImageMetaData> result = new ArrayList<>();
 		File dir = new File(getFilePath());
-		FileFilter fileFilter = new WildcardFileFilter("*.*");
-		File[] files = dir.listFiles(fileFilter);
+		File[] files = dir.listFiles(new FileFilter() {
+		    @Override
+		    public boolean accept(File file) {
+		        return !file.getName().startsWith(".");
+		    }
+		});
 		for (File file: files)
 			result.add(
 				new ImageMetaData(file.getName(), 

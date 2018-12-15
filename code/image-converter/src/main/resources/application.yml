@@ -11,7 +11,7 @@ spring:
     port: 5672
     username: guest
     password: guest
-      
+
 logging:
   file: converter-service.log
   pattern:
@@ -30,9 +30,8 @@ images:
     type: static # supported values: static, self  
     base-url: http://localhost:7071
   datastore:
-    type: mongodb # supported values: fs, mongodb
-    fs: 
+    type: fs # supported values: fs, mongodb
+    fs:
       path:
         upload:  "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/images"
         preview: "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/preview"
-      

@@ -2,47 +2,44 @@ version: '3.3'
 
 services:
 
-  uploader_mdb:
-    container_name: uploader
+  uploader:
+    container_name: uploader_mdb
     hostname: uploader
-    image: ...
+    image: mvkvl/circus
     volumes:
-        - ../upload:/upload
-        - ./uploader:/service
-        - ./bootstrap.yml:/service/bootstrap.yml
+        - ./uploader/service:/service
+        - ./uploader/circus:/etc/circus
     ports:
-        - '8091:7070'
+        - '7070:7070'
     depends_on:
-        - rabbitmq_mdb
-        - mongodb_mdb
+        - rabbitmq
+        - mongodb
 
-  converter_mdb:
-    container_name: converter
+  converter:
+    container_name: converter_mdb
     hostname: converter
-    image: ...
+    image: mvkvl/circus
     volumes:
-        - ../upload:/upload
-        - ./converter:/service
-        - ./bootstrap.yml:/service/bootstrap.yml
+        - ./converter/service:/service
+        - ./converter/circus:/etc/circus
     depends_on:
-        - rabbitmq_mdb
-        - mongodb_mdb
+        - rabbitmq
+        - mongodb
 
-  viewer_mdb:
-    container_name: viewer
+  viewer:
+    container_name: viewer_mdb
     hostname: viewer
-    image: ...
+    image: mvkvl/circus
     volumes:
-        - ../upload:/upload
-        - ./viewer:/service
-        - ./bootstrap.yml:/service/bootstrap.yml
+        - ./viewer/service:/service
+        - ./viewer/circus:/etc/circus
     ports:
-        - '8092:7071'
+        - '7071:7071'
     depends_on:
-        - mongodb_mdb
+        - mongodb
 
-  rabbitmq_mdb:
-    container_name: rabbit
+  rabbitmq:
+    container_name: rabbit_mdb
     hostname: rabbit
     image: rabbitmq:3.7.8-management-alpine
     volumes:
@@ -51,11 +48,12 @@ services:
 #        - '15672:15672'
 #        - '5672:5672'
 
-  mongodb_mdb:
-    container_name: mongo
+  mongodb:
+    container_name: mongo_mdb
     hostname: mongo
     image: bitnami/mongodb
     volumes:
         - ./mongodb:/bitnami
     ports:
+        # to connect to database from host machine
         - '27017:27017'

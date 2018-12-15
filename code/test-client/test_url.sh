@@ -1,6 +1,6 @@
 
 
-SERVICE_URL=http://localhost:8081/upload
+SERVICE_URL=http://localhost:7070/upload
 
 
 curl \

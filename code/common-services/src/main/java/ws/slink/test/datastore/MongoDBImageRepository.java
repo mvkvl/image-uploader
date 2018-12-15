@@ -1,5 +1,6 @@
 package ws.slink.test.datastore;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import ws.slink.test.datatype.Base64EncodedImageJson;

@@ -10,14 +10,14 @@ spring:
     port: 5672
     username: guest
     password: guest
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-          
+#  data:
+#    mongodb:
+#      host: localhost
+#      port: 27017
+
 server:
   port: 7070
-  
+
 logging:
   file: upload-service.log
   pattern:
@@ -26,16 +26,15 @@ logging:
   level:
 #    console: 'ERROR'
     root: ERROR
-    org.springframework: ERROR
+    org.springframework: WARN
     org.hibernate: ERROR
     ws.slink.test: ERROR
-    ws.slink.datastore: DEBUG
+    ws.slink.datastore: WARN
 
 images:
   datastore:
-    type: mongodb # supported values: fs, mongodb
-    fs: 
+    type: fs # supported values: fs, mongodb
+    fs:
       path:
         upload:  "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/images/"
         preview: "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/preview"
-      
