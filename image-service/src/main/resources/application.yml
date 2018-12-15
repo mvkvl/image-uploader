@@ -30,8 +30,13 @@ logging:
     org.hibernate: ERROR
     ws.slink.test: ERROR
     ws.slink.test.datastore: DEBUG
+    ws.slink.test.controllers: DEBUG
 
 images:
+  view:
+    path:
+      image:   "image/view"
+      preview: "preview/view"
   url-provider:
     type: self
   datastore:

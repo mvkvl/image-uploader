@@ -14,12 +14,11 @@ public class ImageServiceApplication {
 	private static final Logger logger = LoggerFactory.getLogger(ImageServiceApplication.class);
 	
 	public static void main(String[] args) throws Exception {
-		logger.info("starting upload service");
+		logger.info("starting image service");
         SpringApplication app = new SpringApplication(ImageServiceApplication.class);
         app.setBannerMode(Banner.Mode.OFF);
         app.run(args);
 	}
-
 	
 	// needed to inject 'HttpServletRequest' in URLProvider
 	@Bean 

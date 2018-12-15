@@ -12,13 +12,18 @@ public class FileSystemImageDataStore extends FileSystemDataStore {
 
 	@Value("${images.datastore.fs.path.upload}")
     private String filePath;
-
 	protected String getFilePath() {
 		return filePath;
 	}
 
-	protected String getURLPath() {
-		return "image";
+	@Value("${images.view.path.image:}")
+    private String viewPath;
+	protected String getViewPath(String fileName) {
+		return urlProvider.get(viewPath) + "/" + fileName;
+	}
+
+	protected String getOriginalViewPath(String fileName) {
+		return "";
 	}
 
 }

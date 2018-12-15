@@ -1,6 +1,7 @@
 package ws.slink.test;
 
 import java.io.IOException;
+import java.net.URLConnection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class PreviewMakerApplication {
 		logger.info("processing " + imageSaveResult);
 		previewWriter.save(
 			    imageConverter.resize(imageReader.read(imageSaveResult.key))
-			   ,imageSaveResult.key, imageSaveResult.input);
+			   ,imageSaveResult.key, URLConnection.guessContentTypeFromName(imageSaveResult.input));
     }
 
 }

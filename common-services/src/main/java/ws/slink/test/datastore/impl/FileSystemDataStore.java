@@ -44,20 +44,20 @@ public abstract class FileSystemDataStore implements ImageDataWriter, ImageDataR
 	URLProvider urlProvider;
 	
 	abstract protected String getFilePath();
-	abstract protected String getURLPath();
-
+	abstract protected String getViewPath(String fileName);
+	abstract protected String getOriginalViewPath(String fileName);
 	
 	@Override
-	public ProcessingResult save(BufferedImage image, String key, String fileName) {
-		logger.debug("saving image to " + getFilePath() + File.separator + fileName);
+	public ProcessingResult save(BufferedImage image, String key, String mimeType) {
+		logger.debug("saving image to " + getFilePath() + File.separator + key);
 		try {
 			ImageIO.write(image, 
-					      FilenameUtils.getExtension(fileName), 
-					      new File(getFilePath() + File.separator + fileName));
-			return new ProcessingResult(fileName, "ok", "file successfully saved", fileName);
+					      FilenameUtils.getExtension(key), 
+					      new File(getFilePath() + File.separator + key));
+			return new ProcessingResult(key, "ok", "file successfully saved", key);
 		} catch (IOException e) {
-        	logger.error("error saving file '" + fileName + "': " + e.getMessage());
-			return new ProcessingResult(fileName, "error", e.getMessage(), "");
+        	logger.error("error saving file '" + key + "': " + e.getMessage());
+			return new ProcessingResult(key, "error", e.getMessage(), "");
 		}
 	}
 
@@ -136,8 +136,10 @@ public abstract class FileSystemDataStore implements ImageDataWriter, ImageDataR
 			result.add(
 				new ImageMetaData(file.getName(), 
 							      file.getName(), 
-							      urlProvider.get(getURLPath() + "/view") + "/" + file.getName(),
-								  urlProvider.get("image/view") + "/" + file.getName()));
+							      getViewPath(file.getName()),
+							      getOriginalViewPath(file.getName())
+								 )
+				);
 		return result;
 	}
 
@@ -150,8 +152,9 @@ public abstract class FileSystemDataStore implements ImageDataWriter, ImageDataR
 		if (file.exists())
 			return  new ImageMetaData(file.getName(), 
 				                      file.getName(), 
-				                      urlProvider.get(getURLPath() + "/view") + "/" + file.getName(),
-				                      urlProvider.get("image/view") + "/" + file.getName());
+				                      getViewPath(file.getName()),
+				                      getOriginalViewPath(file.getName())
+				                      );
 		else
 			return new ImageMetaData();
 	}
