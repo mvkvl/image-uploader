@@ -11,4 +11,4 @@ done
 curl --silent \
      --request POST \
      $FILES \
-     $SERVICE_URL
+     $SERVICE_URL | jq "."

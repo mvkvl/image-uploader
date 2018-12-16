@@ -33,4 +33,4 @@ curl --silent \
      --header "Content-Type: application/json" \
      --request POST \
      --data $JSON \
-     $SERVICE_URL
+     $SERVICE_URL | jq "."
