@@ -27,3 +27,4 @@ docker/service_fs/converter/service/image-converter
 docker/service_fs/uploader/service/upload-service
 docker/service_fs/viewer/service/image-service
 .tmp/
+**/docker_dev

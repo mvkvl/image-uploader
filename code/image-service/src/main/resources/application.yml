@@ -40,7 +40,7 @@ images:
   url-provider:
     type: self
   datastore:
-    type: mongodb # supported values: fs, mongodb
+    type: fs # supported values: fs, mongodb
     fs: 
       path:
         upload:  "/Users/kami/work/dev/portfolio/tasks/image-upload-service/upload/images/"

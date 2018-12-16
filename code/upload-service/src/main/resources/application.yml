@@ -10,10 +10,81 @@ spring:
     port: 5672
     username: guest
     password: guest
-#  data:
-#    mongodb:
-#      host: localhost
-#      port: 27017
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+
+#paths:
+#  /upload:
+#    post[application/json]:
+#      summary: upload JSON
+#    post[multipart/form-data]:
+#      summary: upload multipart
+#    post[application/x-www-form-urlencoded]:
+#      summary: upload URL list
+  
+
+
+#  /upload:
+#    post:
+#      requestBody:
+#        content:
+#          'application/x-www-form-urlencoded':
+#            schema:
+#              properties:
+#                url: 
+#                  description: a list of URLs to process
+#                 type: String[]
+#            required:
+#             - url
+#          'multipart/form-data':
+#            schema:
+#              properties:
+#                file: 
+#                  description: a list of files to process
+#                  type: MultipartFile[]
+#            required:
+#              - file
+#          'application/json':
+#            schema:
+#              properties:
+#                file: 
+#                  description: a list of files to process
+#                  type: Base64EncodedImageJson []
+#            required:
+#              - file
+         
+         
+         
+#      summary: upload JSON
+#    post[multipart/form-data]:
+#      summary: upload multipart
+#    post[application/x-www-form-urlencoded]:
+#      summary: upload URL list
+      
+#  /upload:
+#    post:
+#      produces: 
+#        - application/json
+#      accepts:
+#        - application/json
+#        - multipart/form-data
+#        - application/x-www-form-urlencoded
+#      produces:
+#        - application/json
+#        - multipart/form-data
+#        - application/x-www-form-urlencoded
+#      summary: upload JSON
+#      operationId: processJSON
+#  /upload[]:
+#    post:
+#      summary: upload multipart form data
+#      operationId: processMultipart
+#  /upload[application/x-www-form-urlencoded]:
+#    post:
+#      summary: upload URL list
+#      operationId: processUrls
 
 server:
   port: 7070
@@ -24,12 +95,11 @@ logging:
     console: "%d %-5level [%thread] %logger : %msg%n"
     file:    "%d %-5level [%thread] %logger : %msg%n"    
   level:
-#    console: 'ERROR'
+    console: ERROR
     root: ERROR
     org.springframework: WARN
     org.hibernate: ERROR
-    ws.slink.test: ERROR
-    ws.slink.datastore: WARN
+    ws.slink.test: INFO
 
 images:
   datastore:

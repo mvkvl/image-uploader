@@ -55,7 +55,6 @@ public class UploadController {
 		return base64Uploader.upload(imagesEncoded);
 	}
 
-	
 	/**
 	 * 
 	 * @param files - a list of files to be uploaded
@@ -68,7 +67,6 @@ public class UploadController {
 		logger.debug("processing multipart/form-data request");
 		return multipartUploader.upload(files);
 	}
-
 
 	/**
 	 * 
