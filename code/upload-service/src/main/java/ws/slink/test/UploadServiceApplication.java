@@ -5,6 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
+
+import ws.slink.test.tools.GracefulShutdown;
 
 @SpringBootApplication
 public class UploadServiceApplication {
@@ -18,4 +23,16 @@ public class UploadServiceApplication {
         app.run(args);
 	}
 
+		
+	@Bean
+	public GracefulShutdown gracefulShutdown() {
+	    return new GracefulShutdown();
+	}
+	
+	@Bean
+	public ConfigurableServletWebServerFactory webServerFactory(final GracefulShutdown gracefulShutdown) {
+	    TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
+	    factory.addConnectorCustomizers(gracefulShutdown);
+	    return factory;
+	}		
 }

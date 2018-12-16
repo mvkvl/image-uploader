@@ -25,6 +25,7 @@ logging:
     org.springframework: ERROR
     org.hibernate: ERROR
     ws.slink.test: INFO
+    ws.slink.test.datastore.impl: ERROR
 
 images:
   datastore:
