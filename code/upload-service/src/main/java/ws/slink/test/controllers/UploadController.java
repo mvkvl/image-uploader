@@ -1,6 +1,7 @@
 package ws.slink.test.controllers;
 
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import ws.slink.test.datatype.Base64EncodedImageJson;
@@ -50,9 +52,18 @@ public class UploadController {
 	 */
 	@CrossOrigin(origins = "*")
 	@PostMapping(path = "/upload", consumes = "application/json", produces = "application/json")
-	public Collection<ProcessingResult> processJSON(@RequestBody Base64EncodedImageJson [] imagesEncoded) {
+	public DeferredResult<Collection<ProcessingResult>> processJSON(@RequestBody Base64EncodedImageJson [] imagesEncoded) {
 		logger.debug("processing application/json request");
-		return base64Uploader.upload(imagesEncoded);
+		DeferredResult<Collection<ProcessingResult>> deferredResult = new DeferredResult<>();
+		CompletableFuture.supplyAsync( () -> base64Uploader.upload(imagesEncoded))
+		                 .whenComplete( (result, error) -> {
+		                	 deferredResult.setResult(result);
+		                	 if (null != error) {
+		                		 logger.error("ERROR: " + error.getMessage());
+		                	 }
+		                 });
+		return deferredResult;
+//		return base64Uploader.upload(imagesEncoded);
 	}
 
 	/**
@@ -63,9 +74,18 @@ public class UploadController {
 	 */
 	@CrossOrigin(origins = "*")
 	@PostMapping(path = "/upload", consumes = "multipart/form-data", produces = "application/json")
-	public Collection<ProcessingResult> processMultipart(@RequestParam("file") MultipartFile [] files) {
+	public DeferredResult<Collection<ProcessingResult>> processMultipart(@RequestParam("file") MultipartFile [] files) {
 		logger.debug("processing multipart/form-data request");
-		return multipartUploader.upload(files);
+		DeferredResult<Collection<ProcessingResult>> deferredResult = new DeferredResult<>();
+		CompletableFuture.supplyAsync( () -> multipartUploader.upload(files))
+		                 .whenComplete( (result, error) -> {
+		                	 deferredResult.setResult(result);
+		                	 if (null != error) {
+		                		 logger.error("ERROR: " + error.getMessage());
+		                	 }
+		                 });
+		return deferredResult;
+//		return multipartUploader.upload(files);
 	}
 
 	/**
@@ -76,9 +96,18 @@ public class UploadController {
 	 */
 	@CrossOrigin(origins = "*")
 	@PostMapping(path = "/upload", consumes = "application/x-www-form-urlencoded", produces = "application/json")
-	public Collection<ProcessingResult> processUrls(@RequestParam("url") String [] urls) {
+	public DeferredResult<Collection<ProcessingResult>> processUrls(@RequestParam("url") String [] urls) {
 		logger.debug("processing application/x-www-form-urlencoded request");
-		return urlUploader.download(urls);
+		DeferredResult<Collection<ProcessingResult>> deferredResult = new DeferredResult<>();
+		CompletableFuture.supplyAsync( () -> urlUploader.download(urls))
+		                 .whenComplete( (result, error) -> {
+		                	 deferredResult.setResult(result);
+		                	 if (null != error) {
+		                		 logger.error("ERROR: " + error.getMessage());
+		                	 }
+		                 });
+		return deferredResult;
+//		return urlUploader.download(urls);
 	}
 
 
