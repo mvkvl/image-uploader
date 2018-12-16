@@ -17,10 +17,13 @@ logging:
     console: "%d %-5level [%thread] %logger : %msg%n"
     file:    "%d %-5level [%thread] %logger : %msg%n"
   level:
+    console: ERROR
     root: ERROR
     org.springframework: ERROR
     org.hibernate: ERROR
-    ws.slink.test: ERROR
+    ws.slink.test: INFO
+    images.preview.queue: ERROR
+    ws.slink.test.datastore.impl: ERROR
 
 images:
   datastore:

@@ -45,7 +45,7 @@ public class PreviewMakerApplication {
 	
 	@StreamListener(target = Sink.INPUT)
     public void processImageFile(ProcessingResult imageSaveResult) throws IOException {
-		logger.info("processing " + imageSaveResult);
+		logger.debug("processing " + imageSaveResult);
 		previewWriter.save(
 			    imageConverter.resize(imageReader.read(imageSaveResult.key))
 			   ,imageSaveResult.key, URLConnection.guessContentTypeFromName(imageSaveResult.input));

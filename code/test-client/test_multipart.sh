@@ -8,7 +8,7 @@ for file in $@; do
   FILES="$FILES -F file=@$file"
 done
 
-curl \
+curl --silent \
      --request POST \
      $FILES \
      $SERVICE_URL

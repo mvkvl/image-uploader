@@ -29,7 +29,7 @@ for file in $@; do
 done
 JSON="${JSON%?}]"
 
-curl \
+curl --silent \
      --header "Content-Type: application/json" \
      --request POST \
      --data $JSON \
